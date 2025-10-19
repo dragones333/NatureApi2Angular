@@ -1,0 +1,6 @@
+@NatureApi2_HostAddress = http://localhost:5243
+
+GET {{NatureApi2_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
