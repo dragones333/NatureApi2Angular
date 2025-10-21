@@ -1,0 +1,24 @@
+# docker-compose.yml
+services:
+  natureapi:
+    build:
+      context: ./         # carpeta raíz de tu proyecto .NET
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"       # ajusta según tu Dockerfile
+    depends_on:
+      - db
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=db;Database=NatureDB;User Id=sa;Password=TuPassword123!
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: "TuPassword123!"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    healthcheck:
+      test: ["CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "TuPassword123!", "-Q", "SELECT 1"]
+      interval: 10s
+      retries: 5
